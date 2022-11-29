@@ -14,6 +14,27 @@ server.listen(8000, () => {
 });
 io.on("connection", (socket) => {
   console.log("User Connected", socket.id);
+
+  socket.emit("newMessage", {
+    from: "Admin",
+    text: "Welcome to the chat app!",
+    createdAt: new Date().getTime(),
+  });
+  socket.broadcast.emit("newMessage", {
+    from: "Admin",
+    text: "New User Joined",
+    createdAt: new Date().getTime(),
+  });
+
+  socket.on("createMessage", (message) => {
+    console.log("creaet message", message);
+    // io.emit("serverMessage", {
+    //   form: "DaDDy's Server",
+    //   text: "This message is broadcast message",
+    //   createdAt: new Date().getTime(),
+    // });
+  });
+
   socket.on("disconnect", () => {
     console.log("User Disconnect", socket.id);
   });
